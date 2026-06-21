@@ -3,6 +3,19 @@
  *
  * By default, semantic-release uses the Angular Conventional Commits preset.
  *
+ * Supported commit message formats:
+ * - <type>: <description>
+ * - <type>(<scope>): <description>
+ * - <type>!: <description>
+ * - <type>(<scope>)!: <description>
+ *
+ * Examples:
+ * - feat: add dark mode
+ * - feat(auth): add OAuth login
+ * - fix(api): handle timeout
+ * - feat!: remove legacy API
+ * - feat(auth)!: replace authentication flow
+ *
  * Commits that trigger a release:
  * - feat:            → Minor release (1.0.0 → 1.1.0)
  * - fix:             → Patch release (1.0.0 → 1.0.1)
@@ -16,18 +29,16 @@
  * the @semantic-release/commit-analyzer plugin with `releaseRules`.
  */
 
-
 module.exports = {
   branches: ['main'],
   plugins: [
     '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
+    './scripts/release-notes.js',
     [
       '@semantic-release/github',
-      // {
-      //   successCommentCondition: false,
-      //   failCommentCondition: false,
-      // },
+      {
+        failCommentCondition: false,
+      },
     ],
   ],
 }
