@@ -32,18 +32,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Semantic Versioning Release
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v6
+      - uses: cycjimmy/semantic-release-action@v6
+        with:
+          args: --config .github/release-notes/.releaserc.json
+          extra_plugins: |
+            conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release Notes
-        if: steps.semantic.outputs.new_release_published == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.semantic.outputs.new_release_version }}
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          
