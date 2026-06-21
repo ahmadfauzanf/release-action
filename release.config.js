@@ -16,6 +16,7 @@
  * the @semantic-release/commit-analyzer plugin with `releaseRules`.
  */
 
+
 module.exports = {
   branches: ['main'],
   plugins: [
