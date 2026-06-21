@@ -1,0 +1,41 @@
+name: OpenNext Cloudflare Worker Pipeline
+# ───────────────────────────────────────────────────────────────────────────────
+# Trigger events
+# ───────────────────────────────────────────────────────────────────────────────
+# • pull request (main)       →  runs code-check (lint, typecheck, build, dry-run)
+# • push         (main)       →  auto deploy to dev after merge
+# • manual run   (main/else)  →  deploy — choose 'dev' or 'prod' as target
+# ───────────────────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Deployment target
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+jobs:
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: cycjimmy/semantic-release-action@v6
+        with:
+          args: --config .github/release-notes/.releaserc.json
+          extra_plugins: |
+            conventional-changelog-conventionalcommits
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
