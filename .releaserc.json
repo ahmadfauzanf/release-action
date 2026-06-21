@@ -1,0 +1,27 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      { "preset": "conventionalcommits" }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "types": [
+            { "type": "feat", "section": "🚀 Features" },
+            { "type": "fix", "section": "🐛 Bug Fixes" },
+            { "type": "refactor", "section": "♻️ Refactors" },
+            { "type": "chore", "hidden": true }
+          ]
+        },
+        "writerOpts": {
+          "headerPartial": "## 🚀 Release v{{version}} ({{date}})\n"
+        }
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}
