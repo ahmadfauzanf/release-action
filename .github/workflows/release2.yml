@@ -34,7 +34,6 @@ jobs:
           node-version: 22
       - uses: cycjimmy/semantic-release-action@v6
         with:
-          args: --config .github/release-notes/.releaserc.json
           extra_plugins: |
             conventional-changelog-conventionalcommits
         env:
