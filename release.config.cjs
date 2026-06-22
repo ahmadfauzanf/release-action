@@ -2,7 +2,6 @@ const writerOpts = require("./scripts/release-notes/templates.cjs");
 
 module.exports = {
   branches: ["main"],
-  repositoryUrl: "https://github.com/sawala-tech/core-qm-strapi",
   plugins: [
     [
       "@semantic-release/commit-analyzer",
