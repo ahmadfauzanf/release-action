@@ -4,14 +4,7 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      mode:
-        description: Deployment target
-        required: true
-        type: choice
-        options:
-          - dev
-          - prod
+
 
 jobs:
   release:
