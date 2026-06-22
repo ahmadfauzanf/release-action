@@ -15,38 +15,32 @@ on:
 
 jobs:
   release:
-    name: Semantic Release
-    # Job ini hanya jalan saat push ke main (bukan saat manual deploy trigger)
+    name: Release
+    # Job ini hanya jalan saat push ke main (workflow_dispatch dipakai untuk deploy, bukan release)
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
-      issues: write
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install semantic-release dependencies
-        run: |
-          npm install --no-save \
-            semantic-release \
-            @semantic-release/changelog \
-            @semantic-release/git \
-            @semantic-release/github \
-            conventional-changelog-conventionalcommits
-
-      - name: Semantic Versioning Release
+      # 1. Auto bump & push tag SemVer berdasarkan Conventional Commits
+      #    (config minimal di .releaserc.json — cuma commit-analyzer, gak bikin GitHub Release sendiri)
+      - name: Bump version and push tag
         id: semantic
+        uses: cycjimmy/semantic-release-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
 
-    outputs:
-      new_release_version: ${{ steps.semantic.outputs.new_release_version }}
+      # 2. Buat GitHub Release dengan notes yang di-generate otomatis oleh GitHub
+      - name: Create GitHub Release
+        if: steps.semantic.outputs.new_release_published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.semantic.outputs.new_release_git_tag }}" \
+            --title "${{ steps.semantic.outputs.new_release_git_tag }}" \
+            --generate-notes
