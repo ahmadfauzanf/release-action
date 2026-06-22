@@ -1,4 +1,4 @@
-name: OpenNext Cloudflare Worker Pipeline
+name: Pipeline
 # ───────────────────────────────────────────────────────────────────────────────
 # Trigger events
 # ───────────────────────────────────────────────────────────────────────────────
@@ -45,5 +45,5 @@ jobs:
           tag_name: v${{ steps.semantic.outputs.new_release_version }}
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
