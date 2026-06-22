@@ -32,6 +32,9 @@ jobs:
       - name: Bump version and push tag
         id: semantic
         uses: cycjimmy/semantic-release-action@v6
+        with:
+          extra_plugins: |
+            conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
