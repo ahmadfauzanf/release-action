@@ -5,23 +5,16 @@ on:
     branches: [main]
   workflow_dispatch:
 
-
 jobs:
   release:
-    name: Release
-    # Job ini hanya jalan saat push ke main (workflow_dispatch dipakai untuk deploy, bukan release)
-    if: github.event_name == 'push'
+    name: Semantic Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: read
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # 1. Auto bump & push tag SemVer berdasarkan Conventional Commits
-      #    (config minimal di .releaserc.json — cuma commit-analyzer, gak bikin GitHub Release sendiri)
       - name: Bump version and push tag
         id: semantic
         uses: cycjimmy/semantic-release-action@v6
@@ -30,8 +23,6 @@ jobs:
             conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 2. Buat GitHub Release dengan notes yang di-generate otomatis oleh GitHub
       - name: Create GitHub Release
         if: steps.semantic.outputs.new_release_published == 'true'
         env:
