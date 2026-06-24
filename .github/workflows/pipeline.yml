@@ -1,4 +1,4 @@
-name: Pipeline
+name: Kodena OpenNext Bundle Deployment
 
 on:
   push:
