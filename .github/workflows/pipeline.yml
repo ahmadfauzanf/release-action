@@ -30,3 +30,4 @@ jobs:
           gh release create "${{ steps.semantic.outputs.new_release_git_tag }}" \
             --title "${{ steps.semantic.outputs.new_release_git_tag }}" \
             --generate-notes
+            
