@@ -17,8 +17,5 @@
   "bugs": {
     "url": "https://github.com/ahmadfauzanf/release-action/issues"
   },
-  "homepage": "https://github.com/ahmadfauzanf/release-action#readme",
-  "devDependencies": {
-    "conventional-changelog-conventionalcommits": "^9.3.1"
-  }
+  "homepage": "https://github.com/ahmadfauzanf/release-action#readme"
 }
